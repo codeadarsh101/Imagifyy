@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const connectDB =async ()=>{
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("✅ DB connected");
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error.message);
+  }
+};
 
-  await mongoose.connect(`${process.env.MONGODB_URI}/imagify`)
-   console.log('DB connected');
-   
-
-    
-}
- 
-export default connectDB
+export default connectDB;
