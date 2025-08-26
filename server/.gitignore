@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Build output (for TS or transpiled backend)
+/dist
+/build
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
