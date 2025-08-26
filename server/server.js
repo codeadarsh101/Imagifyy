@@ -13,7 +13,7 @@ app.use(express.json());
 
 // ✅ Allow CORS (update frontend URL later)
 app.use(cors({
-  origin: "*", // change to frontend URL after deploy
+    origin: "https://imagifyy-flax.vercel.app", // change to frontend URL after deploy
   credentials: true,
 }));
 
