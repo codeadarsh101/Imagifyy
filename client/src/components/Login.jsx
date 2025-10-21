@@ -14,23 +14,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   //  Demo login handler
-  const handleDemoLogin = () => {
-    const demoUser = {
-      _id: "demo123",
-      name: "Demo User",
-      email: "demo@imagify.com",
-    };
 
-    const demoToken = "demo_token_123";
+  const handleDemoLogin = async () => {
+  try {
+    const { data } = await axios.post(backendUrl + "/api/user/demo-login");
+    if (data.success) {
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      toast.success("🎉 Logged in as Demo User!");
+      setShowLogin(false);
+    }
+  } catch (error) {
+    toast.error("Demo login failed");
+  }
+};
 
-    // simulate successful login
-    setToken(demoToken);
-    setUser(demoUser);
-    localStorage.setItem("token", demoToken);
-
-    toast.success("🎉 Logged in as Demo User!", { closeOnClick: true });
-    setShowLogin(false);
-  };
+  
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();

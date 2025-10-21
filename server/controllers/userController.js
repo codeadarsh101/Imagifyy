@@ -98,6 +98,56 @@ export const userCredits = async (req, res) => {
   }
 };
 
+
+export const demoLogin = async (req, res) => {
+  try {
+    // check if demo user exists
+    let demoUser = await userModel.findOne({ email: "demo@imagify.com" });
+
+    // if not, create one
+    if (!demoUser) {
+      demoUser = new userModel({
+        name: "Demo User",
+        email: "demo@imagify.com",
+        password: await bcrypt.hash("demo123", 10),
+        creditBalance: 5, // give 5 demo credits
+      });
+      await demoUser.save();
+      
+    } else {
+      // reset credits every time for unlimited demo
+      demoUser.creditBalance = 5;
+      await demoUser.save();
+    }
+
+    // create token
+     const token = jwt.sign({ id: demoUser._id }, process.env.JWT_SECRET);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        name: demoUser.name,
+        email: demoUser.email,
+        credits: demoUser.creditBalance,
+      },
+    });
+  } catch (error) {
+    console.log("Demo login error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
 const razorpayInstance = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -178,3 +228,4 @@ const razorpayInstance = new Razorpay({
     res.json({ success: false, message: error.message });
   }
 }; 
+
