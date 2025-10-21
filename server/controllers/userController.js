@@ -14,6 +14,12 @@ export const registerUser = async (req, res) => {
       });
     }
 
+     const userExists = await  userModel.findOne({ email });
+      if (userExists) {
+       res.status(400);
+       throw new Error("User already exists");
+  }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -113,9 +119,9 @@ export const demoLogin = async (req, res) => {
         creditBalance: 5, // give 5 demo credits
       });
       await demoUser.save();
+
+    } else {  // when new demo user login ..
       
-    } else {
-      // reset credits every time for unlimited demo
       demoUser.creditBalance = 5;
       await demoUser.save();
     }
